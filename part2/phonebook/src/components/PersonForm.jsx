@@ -2,9 +2,17 @@ export const PersonForm = ({
   addPerson,
   newName,
   newNumber,
-  handleNameChange,
-  handleNumberChange
+  setNewName,
+  setNewNumber
 }) => {
+  const handleNameChange = event => {
+    setNewName(event.target.value)
+  }
+
+  const handleNumberChange = event => {
+    setNewNumber(event.target.value)
+  }
+
   return (
     <form onSubmit={addPerson}>
       <div>
