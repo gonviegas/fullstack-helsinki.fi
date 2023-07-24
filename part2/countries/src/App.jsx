@@ -35,6 +35,9 @@ const App = () => {
   return (
     <>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
+      {countriesFiltered.length > 10 && (
+        <div>Too many matches, specify another filter</div>
+      )}
       {countriesFiltered.length <= 10 &&
         countriesFiltered.length !== 1 &&
         countriesFiltered.map((country, idx) => (
@@ -44,13 +47,13 @@ const App = () => {
             setSelectedCountry={setSelectedCountry}
           />
         ))}
-      {countriesFiltered.length > 10 && (
-        <div>Too many matches, specify another filter</div>
-      )}
       {countriesFiltered.length === 1 ? (
         <CountryDetails country={countriesFiltered[0]} />
       ) : (
         selectedCountry && <CountryDetails country={selectedCountry} />
+      )}
+      {filter && countriesFiltered.length === 0 && (
+        <div>No countries match the filter</div>
       )}
     </>
   )
