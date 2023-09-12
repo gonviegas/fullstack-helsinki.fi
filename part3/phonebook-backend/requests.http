@@ -11,7 +11,7 @@ content-type: application/json
 }
 
 ###
-# create a already existent ntry in the phonebook
+# create a already existent entry in the phonebook
 POST http://localhost:3001/api/persons/ HTTP/1.1
 content-type: application/json
 
