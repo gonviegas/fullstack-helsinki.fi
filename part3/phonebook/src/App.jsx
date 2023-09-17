@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNameFilter] = useState('')
-  const [successMessage, setSucessMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
@@ -46,14 +46,11 @@ const App = () => {
             )
             setNewName('')
             setNewNumber('')
-            setSucessMessage(`${updatedPerson.name} number was changed`)
-            setTimeout(() => {
-              setSucessMessage(null)
-            }, 5000)
+            setSuccessMessage(`${updatedPerson.name} number was changed`)
           })
           .catch(err => {
-            console.error(err)
-            alert(`Error updating ${updatedPerson.name} in phonebook`)
+            console.log(err.response.data.error)
+            setErrorMessage(err.response.data.error)
           })
       }
     } else {
@@ -69,14 +66,11 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
-          setSucessMessage(`Added ${person.name}`)
-          setTimeout(() => {
-            setSucessMessage(null)
-          }, 5000)
+          setSuccessMessage(`Added ${person.name}`)
         })
         .catch(err => {
-          console.error(err)
-          alert(`Error adding ${person.name} to the phonebook`)
+          console.log(err.response.data.error)
+          setErrorMessage(err.response.data.error)
         })
     }
   }
@@ -97,10 +91,9 @@ const App = () => {
         })
         .catch(err => {
           console.error(err)
-          setErrorMessage(`Information of ${person.name} has already been removed from the server`)
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
+          setErrorMessage(
+            `Information of ${person.name} has already been removed from the server`
+          )
         })
     }
   }
@@ -111,6 +104,8 @@ const App = () => {
       <Notification
         successMessage={successMessage}
         errorMessage={errorMessage}
+        setSuccessMessage={setSuccessMessage}
+        setErrorMessage={setErrorMessage}
       />
       <Filter nameFilter={nameFilter} setNameFilter={setNameFilter} />
       <h3>Add a new</h3>
