@@ -1,0 +1,18 @@
+# get all persons
+GET http://localhost:3001/api/persons/
+
+###
+# create a new entry in the phonebook
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{ "name":"A",
+  "number":"12345"
+}
+
+###
+# create a already existent entry in the phonebook
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{"id":2,"name":"Ada Lovelace","number":"39-44-5323523"}
