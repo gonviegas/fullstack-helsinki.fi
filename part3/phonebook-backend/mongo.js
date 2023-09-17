@@ -9,7 +9,6 @@ const password = process.argv[2]
 const personName = process.argv[3]
 const personNumber = process.argv[4]
 
-// const url = `mongodb+srv://admin:${password}@cluster0.abvupb8.mongodb.net/?retryWrites=true&w=majority`
 const url = `mongodb+srv://admin:${password}@cluster0.abvupb8.mongodb.net/phonebookApp?retryWrites=true&w=majority`
 
 mongoose.set('strictQuery', false)
@@ -28,7 +27,7 @@ const person = new Person({
 })
 
 if (personName && personNumber) {
-  person.save().then(result => {
+  person.save().then(() => {
     console.log(`added ${person.name} number ${person.number} to phonebook`)
     mongoose.connection.close()
   })

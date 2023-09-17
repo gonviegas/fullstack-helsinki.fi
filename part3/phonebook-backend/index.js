@@ -27,13 +27,7 @@ app.use(
   })
 )
 
-let persons = []
-
-const generateId = () => {
-  return Math.floor(Math.random() * 100000000000000)
-}
-
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
   Person.find({})
     .then(persons => {
       response.json(persons)
@@ -55,7 +49,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -97,13 +91,13 @@ app.put('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.get('/info', (request, response) => {
+app.get('/info', (request, response, next) => {
   Person.find({})
     .then(persons => {
       response.send(`
         <p>Phonebook has information for ${
-          Object.keys(persons).length
-        } people</p>
+  Object.keys(persons).length
+} people</p>
         <p>${new Date()}</p>
       `)
     })
