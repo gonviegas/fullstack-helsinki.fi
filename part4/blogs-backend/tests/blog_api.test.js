@@ -54,10 +54,11 @@ beforeEach(async () => {
 
 test('returns 6 blogs in json', async () => {
   const response = await api.get('/api/blogs')
-
+  // .expect('application/json')
+  // .expect(200)
   expect(response.type).toEqual('application/json')
   expect(response.status).toEqual(200)
-  expect(response.body).toHaveLength(6)
+  expect(response.body).toHaveLength(initialBlogs.length)
 })
 
 test('id property is defined on each blog', async () => {
@@ -66,6 +67,25 @@ test('id property is defined on each blog', async () => {
   for (const blog of response.body) {
     expect(blog.id).toBeDefined()
   }
+})
+
+test('blog created successfully', async () => {
+  const newBlog = {
+    title: 'Test blog creation',
+    author: 'John Doe',
+    url: 'https://www.test.com',
+    likes: 3
+  }
+
+  const postResponse = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const getResponse = await api.get('/api/blogs')
+  expect(getResponse.body).toHaveLength(initialBlogs.length + 1)
+  expect(getResponse.body[initialBlogs.length]).toEqual(postResponse.body)
 })
 
 afterAll(async () => {
