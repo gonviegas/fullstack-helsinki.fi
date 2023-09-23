@@ -88,6 +88,42 @@ test('blog created successfully', async () => {
   expect(getResponse.body[initialBlogs.length]).toEqual(postResponse.body)
 })
 
+test('if likes not defined on request, is set to 0', async () => {
+  const newBlog = {
+    title: 'Test blog creation',
+    author: 'John Doe',
+    url: 'https://www.test.com'
+  }
+
+  const postResponse = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  expect(postResponse.body.likes).toEqual(0)
+})
+
+test('if title not defined on request, return 400', async () => {
+  const newBlogWithoutUrl = {
+    title: 'Test blog creation',
+    author: 'John Doe',
+    like: 3
+  }
+
+  await api.post('/api/blogs').send(newBlogWithoutUrl).expect(400)
+})
+
+test('if url not defined on request, return 400', async () => {
+  const newBlogWithoutTitle = {
+    author: 'John Doe',
+    url: 'https://www.test.com',
+    like: 3
+  }
+
+  await api.post('/api/blogs').send(newBlogWithoutTitle).expect(400)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
