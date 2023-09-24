@@ -72,7 +72,6 @@ const mostBlogs = blogs => {
     .groupBy('author')
     .map((blogs, author) => ({ author, blogs: blogs.length }))
     .maxBy('blogs')
-  console.log(output)
   return output
 }
 
@@ -81,7 +80,6 @@ const mostLikes = blogs => {
     .groupBy('author')
     .map((blogs, author) => ({ author, likes: totalLikes(blogs) }))
     .maxBy('likes')
-  console.log(output)
   return output
 }
 
