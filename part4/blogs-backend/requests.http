@@ -1,3 +1,4 @@
+## BLOGS
 GET http://localhost:3003/api/blogs
 
 POST http://localhost:3003/api/blogs HTTP/1.1
@@ -9,3 +10,16 @@ content-type: application/json
   "url": "www.url-test.com",
   "likes": 23
 }
+
+## USERS
+GET http://localhost:3003/api/users
+
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+  "username": "johndoe",
+  "name": "John Doe",
+  "password": "pass1234"
+}
+
