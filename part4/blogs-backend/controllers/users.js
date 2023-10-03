@@ -16,12 +16,24 @@ usersRouter.post('/', async (request, response) => {
   const user = new User({
     username,
     name,
-    passwordHash,
+    passwordHash
   })
 
-  const savedUser = await user.save()
-
-  response.status(201).json(savedUser)
+  if (username.length < 3) {
+    return response
+      .status(400)
+      .send('username must be at least 3 characters long')
+  } else if (password.length < 3) {
+    return response
+      .status(400)
+      .send('password must be at least 3 characters long')
+  } else {
+    const savedUser = await user.save().catch(err => {
+      if (err.code === 11000)
+        response.status(400).send('username already exists')
+    })
+    response.status(201).json(savedUser)
+  }
 })
 
 module.exports = usersRouter
