@@ -3,7 +3,7 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate('blogs', { url: 1, title: 1, author: 1 })
   response.json(users)
 })
 
@@ -28,11 +28,15 @@ usersRouter.post('/', async (request, response) => {
       .status(400)
       .send('password must be at least 3 characters long')
   } else {
-    const savedUser = await user.save().catch(err => {
-      if (err.code === 11000)
-        response.status(400).send('username already exists')
-    })
-    response.status(201).json(savedUser)
+    await user
+      .save()
+      .then(res => {
+        response.status(201).json(res)
+      })
+      .catch(err => {
+        if (err.errors.username) response.status(400).send('username already exists')
+        else response.status(400)
+      })
   }
 })
 
