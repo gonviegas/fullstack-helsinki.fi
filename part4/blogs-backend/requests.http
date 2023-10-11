@@ -1,8 +1,49 @@
+## LOGIN
+POST http://localhost:3003/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "password": "pass1234"
+}
+
+POST http://localhost:3003/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "someone",
+  "password": "passABC"
+}
+
+
+## USERS
+GET http://localhost:3003/api/users
+
+POST http://localhost:3003/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "name": "John Doe",
+  "password": "pass1234"
+}
+
+POST http://localhost:3003/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "someone",
+  "name": "Some One",
+  "password": "passABC"
+}
+
+
 ## BLOGS
 GET http://localhost:3003/api/blogs
 
 POST http://localhost:3003/api/blogs HTTP/1.1
-content-type: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5kb2UiLCJpZCI6IjY1MWViYjBkMjFiNmYwNTkxM2U3MjgzNCIsImlhdCI6MTY5NzAyMjEyMywiZXhwIjoxNjk3MDI1NzIzfQ._qNmW8L3JMBUcpRl92LsIcYtuYvil-6opk396sAP2eA
 
 {
   "title": "title test",
@@ -11,24 +52,19 @@ content-type: application/json
   "likes": 23
 }
 
-## USERS
-GET http://localhost:3003/api/users
-
-POST http://localhost:3003/api/users HTTP/1.1
-content-type: application/json
+POST http://localhost:3003/api/blogs HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbWVvbmUiLCJpZCI6IjY1MjQ2ZTcwNzMxMTE0MWNlMTVjZmYyZiIsImlhdCI6MTY5Njk0ODY3MCwiZXhwIjoxNjk2OTUyMjcwfQ.ZtE0gvgsOYF5qwtv7yU6fjsT6CkQactn4JbwbHGeMBA
 
 {
-  "username": "johndoe",
-  "name": "John Doe",
-  "password": "pass1234"
+  "title": "title test",
+  "author": "author test",
+  "url": "www.url-test.com",
+  "likes": 23
 }
 
-## LOGIN
-POST http://localhost:3003/api/login HTTP/1.1
-content-type: application/json
+DELETE http://localhost:3003/api/blogs/65246f537311141ce15cff37 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5kb2UiLCJpZCI6IjY1MWViYjBkMjFiNmYwNTkxM2U3MjgzNCIsImlhdCI6MTY5NzAyMjEyMywiZXhwIjoxNjk3MDI1NzIzfQ._qNmW8L3JMBUcpRl92LsIcYtuYvil-6opk396sAP2eA
 
-{
-  "username": "johndoe",
-  "password": "pass1234"
-}
-
+DELETE http://localhost:3003/api/blogs/6525281dfc23b02189f3ee5b HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5kb2UiLCJpZCI6IjY1MWViYjBkMjFiNmYwNTkxM2U3MjgzNCIsImlhdCI6MTY5NjYwNzI5Mn0.72F0HhA7WmcHfSS0eeeTwy1M32gvsSSv7-pfFOqUs8E

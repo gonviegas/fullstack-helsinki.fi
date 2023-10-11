@@ -30,6 +30,7 @@
     "mongoose-unique-validator": "^4.0.0"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "globalTeardown": "./tests/teardown.js"
   }
 }

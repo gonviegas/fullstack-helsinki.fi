@@ -1,6 +1,5 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -8,17 +7,19 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  const body = request.body
+  if (!request.token || !request.user) {
+    return response.status(401).json({ error: 'authentication missing' })
+  }
 
-  // const user = await User.findById(body.userId)
-  const user = await User.findOne({})
+  const body = request.body
+  const user = request.user
 
   const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
-    user: user.id
+    user: user._id
   })
 
   if (blog.title && blog.url) {
@@ -32,8 +33,23 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+  if (!request.token || !request.user) {
+    return response.status(401).json({ error: 'authentication missing' })
+  }
+
+  const user = request.user
+
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    if (user._id.toString() === blog.user.toString()) {
+      await Blog.findByIdAndDelete(request.params.id)
+      response.status(204).end()
+    } else {
+      response.status(401).end()
+    }
+  } else {
+    response.status(404).end()
+  }
 })
 
 blogsRouter.put('/:id', async (request, response) => {
