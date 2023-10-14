@@ -45,6 +45,7 @@ const App = () => {
       setPassword('')
       setNotification({ type: 'success', msg: 'User logged in' })
     } catch (exception) {
+      console.log(exception)
       setNotification({ type: 'error', msg: 'Wrong username or password' })
     }
   }
@@ -57,15 +58,56 @@ const App = () => {
 
   const addBlog = async blogObject => {
     try {
-      const blog = await blogService.create(blogObject)
+      const response = await blogService.create(blogObject)
       addBlogRef.current.toggleVisibility()
+      const userId = response.user
+      const blog = response
+      blog.user = { name: user.name, username: user.username, id: userId }
       setBlogs(blogs.concat(blog))
       setNotification({
         type: 'success',
         msg: `new Blog created: ${blog.title} by ${blog.author}`
       })
     } catch (exception) {
+      console.log(exception)
       setNotification({ type: 'error', msg: 'Failed to create blog' })
+    }
+  }
+
+  const updateBlog = async (id, blogObject) => {
+    try {
+      const blog = await blogService.update(id, blogObject)
+      const currentBlogIndex = blogs.findIndex(blog => blog.id === id)
+      const updatedBlog = { ...blogs[currentBlogIndex], likes: blog.likes }
+      const newBlogs = [
+        ...blogs.slice(0, currentBlogIndex),
+        updatedBlog,
+        ...blogs.slice(currentBlogIndex + 1)
+      ]
+      setBlogs(newBlogs)
+      setNotification({
+        type: 'success',
+        msg: `Blog updated: ${blog.title} by ${blog.author}`
+      })
+    } catch (exception) {
+      console.log(exception)
+      setNotification({ type: 'error', msg: 'Failed to update blog' })
+    }
+  }
+
+  const deleteBlog = async id => {
+    try {
+      const blog = await blogService.remove(id)
+      const newBlogs = blogs.filter(b => b.id !== id)
+      console.log(newBlogs)
+      setBlogs(newBlogs)
+      setNotification({
+        type: 'success',
+        msg: `Blog deleted`
+      })
+    } catch (exception) {
+      console.log(exception)
+      setNotification({ type: 'error', msg: 'Failed to update blog' })
     }
   }
 
@@ -90,7 +132,7 @@ const App = () => {
 
   const blogForm = () => {
     return (
-      <Togglable buttonLabel="new blog" ref={addBlogRef}>
+      <Togglable buttonLabel="create new blog" ref={addBlogRef}>
         <BlogForm createBlog={addBlog} />
       </Togglable>
     )
@@ -99,6 +141,8 @@ const App = () => {
   if (user === null) {
     return <div>{loginForm()}</div>
   }
+
+  const blogsLikesDescending = [...blogs].sort((a, b) => b.likes - a.likes)
 
   return (
     <div>
@@ -111,9 +155,16 @@ const App = () => {
         {user.name} logged in
         <button onClick={handleLogout}>logout</button>
       </div>
+      <br />
       {blogForm()}
-      {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} />
+      {blogsLikesDescending.map(blog => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          user={user}
+          updateBlog={updateBlog}
+          deleteBlog={deleteBlog}
+        />
       ))}
     </div>
   )
