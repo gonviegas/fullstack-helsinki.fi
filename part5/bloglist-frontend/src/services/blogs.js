@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { rootUrl } from './axios'
 
-const baseUrl = rootUrl + '/api/blogs'
+const baseUrl = '/api/blogs'
 
 let token = null
 
