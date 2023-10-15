@@ -28,10 +28,10 @@ const App = () => {
   }, [])
 
   const addBlogRef = useRef()
+  const blogsLikesDescending = [...blogs].sort((a, b) => b.likes - a.likes)
 
   const handleLogin = async event => {
     event.preventDefault()
-    console.log('logging in with', username, password)
 
     try {
       const user = await loginService.login({
@@ -97,9 +97,8 @@ const App = () => {
 
   const deleteBlog = async id => {
     try {
-      const blog = await blogService.remove(id)
+      await blogService.remove(id)
       const newBlogs = blogs.filter(b => b.id !== id)
-      console.log(newBlogs)
       setBlogs(newBlogs)
       setNotification({
         type: 'success',
@@ -111,14 +110,14 @@ const App = () => {
     }
   }
 
-  const loginForm = () => {
-    return (
-      <div>
-        <h2>Log in to application</h2>
-        <Notification
-          setNotification={setNotification}
-          notification={notification}
-        />
+  return (
+    <div>
+      {!user ? <h2>Log in to application</h2> : <h2>blogs</h2>}
+      <Notification
+        setNotification={setNotification}
+        notification={notification}
+      />
+      {!user ? (
         <LoginForm
           username={username}
           password={password}
@@ -126,46 +125,27 @@ const App = () => {
           handlePasswordChange={({ target }) => setPassword(target.value)}
           handleSubmit={handleLogin}
         />
-      </div>
-    )
-  }
-
-  const blogForm = () => {
-    return (
-      <Togglable buttonLabel="create new blog" ref={addBlogRef}>
-        <BlogForm createBlog={addBlog} />
-      </Togglable>
-    )
-  }
-
-  if (user === null) {
-    return <div>{loginForm()}</div>
-  }
-
-  const blogsLikesDescending = [...blogs].sort((a, b) => b.likes - a.likes)
-
-  return (
-    <div>
-      <h2>blogs</h2>
-      <Notification
-        setNotification={setNotification}
-        notification={notification}
-      />
-      <div>
-        {user.name} logged in
-        <button onClick={handleLogout}>logout</button>
-      </div>
-      <br />
-      {blogForm()}
-      {blogsLikesDescending.map(blog => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          user={user}
-          updateBlog={updateBlog}
-          deleteBlog={deleteBlog}
-        />
-      ))}
+      ) : (
+        <div>
+          <div>
+            {user.name} logged in
+            <button onClick={handleLogout}>logout</button>
+          </div>
+          <br />
+          <Togglable buttonLabel="create new blog" ref={addBlogRef}>
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
+          {blogsLikesDescending.map(blog => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              user={user}
+              updateBlog={updateBlog}
+              deleteBlog={deleteBlog}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
