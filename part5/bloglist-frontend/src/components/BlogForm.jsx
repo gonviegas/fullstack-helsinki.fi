@@ -22,6 +22,7 @@ const BlogForm = ({ createBlog }) => {
               newBlogCopy.title = target.value
               setNewBlog(newBlogCopy)
             }}
+            placeholder="write title here"
           />
         </div>
         <div>
@@ -33,6 +34,7 @@ const BlogForm = ({ createBlog }) => {
               newBlogCopy.author = target.value
               setNewBlog(newBlogCopy)
             }}
+            placeholder="write author here"
           />
         </div>
         <div>
@@ -44,6 +46,7 @@ const BlogForm = ({ createBlog }) => {
               newBlogCopy.url = target.value
               setNewBlog(newBlogCopy)
             }}
+            placeholder="write url here"
           />
         </div>
         <button type="submit">create</button>

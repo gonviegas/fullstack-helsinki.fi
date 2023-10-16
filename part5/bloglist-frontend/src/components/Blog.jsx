@@ -11,9 +11,6 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     marginBottom: 5
   }
 
-  const hideWhenVisible = { display: detailsVisible ? 'none' : '' }
-  const showWhenVisible = { display: detailsVisible ? '' : 'none' }
-
   const increaseLikes = () => {
     const updatedBlog = {
       user: blog.user.id,
@@ -27,35 +24,38 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   }
 
   const removeBlog = () => {
-    const confirm = window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)
+    const confirm = window.confirm(
+      `Remove blog ${blog.title} by ${blog.author}?`
+    )
     confirm && deleteBlog(blog.id)
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <div>
         {blog.title} {blog.author}
-        <button style={hideWhenVisible} onClick={() => setDetailsVisible(true)}>
-          view
-        </button>
-        <button
-          style={showWhenVisible}
-          onClick={() => setDetailsVisible(false)}
-        >
-          hide
-        </button>
+        {!detailsVisible && (
+          <button onClick={() => setDetailsVisible(true)}>view</button>
+        )}
+        {detailsVisible && (
+          <button onClick={() => setDetailsVisible(false)}>hide</button>
+        )}
       </div>
-      <div style={showWhenVisible}>
-        <div>{blog.url}</div>
-        <div>
-          likes {blog.likes}
-          <button onClick={increaseLikes}>like</button>
+      {detailsVisible && (
+        <div className="blog-details">
+          <div>{blog.url}</div>
+          <div>
+            likes {blog.likes}
+            <button onClick={increaseLikes}>like</button>
+          </div>
+          <div>{blog.user.name}</div>
+          <div>
+            {blog.user.username === user.username && (
+              <button onClick={removeBlog}>remove</button>
+            )}
+          </div>
         </div>
-        <div>{blog.user.name}</div>
-        <div>
-          {blog.user.username === user.username && <button onClick={removeBlog}>remove</button>}
-        </div>
-      </div>
+      )}
     </div>
   )
 }
