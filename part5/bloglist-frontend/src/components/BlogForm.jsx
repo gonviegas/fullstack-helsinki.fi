@@ -16,6 +16,7 @@ const BlogForm = ({ createBlog }) => {
         <div>
           title:
           <input
+            id="title"
             value={newBlog.title}
             onChange={({ target }) => {
               const newBlogCopy = { ...newBlog }
@@ -28,6 +29,7 @@ const BlogForm = ({ createBlog }) => {
         <div>
           author:
           <input
+            id="author"
             value={newBlog.author}
             onChange={({ target }) => {
               const newBlogCopy = { ...newBlog }
@@ -40,6 +42,7 @@ const BlogForm = ({ createBlog }) => {
         <div>
           url:
           <input
+            id="url"
             value={newBlog.url}
             onChange={({ target }) => {
               const newBlogCopy = { ...newBlog }
@@ -49,7 +52,7 @@ const BlogForm = ({ createBlog }) => {
             placeholder="write url here"
           />
         </div>
-        <button type="submit">create</button>
+        <button id="create-blog-button" type="submit">create</button>
       </form>
     </div>
   )
