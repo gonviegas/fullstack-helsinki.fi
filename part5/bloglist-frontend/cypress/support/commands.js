@@ -34,6 +34,12 @@ Cypress.Commands.add('login', ({ username, password }) => {
   })
 })
 
+Cypress.Commands.add('getBlogs', () => {
+  const blog = cy.request('GET', `${Cypress.env('BACKEND')}/blogs`)
+  cy.visit('')
+  return blog
+})
+
 Cypress.Commands.add('createBlog', ({ title, author, url }) => {
   cy.request({
     url: `${Cypress.env('BACKEND')}/blogs`,

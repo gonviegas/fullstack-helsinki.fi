@@ -44,9 +44,9 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
       {detailsVisible && (
         <div className="blog-details">
           <div>{blog.url}</div>
-          <div>
+          <div id="likes">
             likes {blog.likes}
-            <button onClick={increaseLikes}>like</button>
+            <button id="like-button" onClick={increaseLikes}>like</button>
           </div>
           <div>{blog.user.name}</div>
           <div>
