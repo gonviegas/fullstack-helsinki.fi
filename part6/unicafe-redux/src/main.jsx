@@ -9,19 +9,39 @@ const store = createStore(reducer)
 const App = () => {
   const good = () => {
     store.dispatch({
-      type: 'GOOD'
+      type: 'GOOD',
+    })
+  }
+
+  const ok = () => {
+    store.dispatch({
+      type: 'OK',
+    })
+  }
+
+  const bad = () => {
+    store.dispatch({
+      type: 'BAD',
+    })
+  }
+
+  const resetStats = () => {
+    store.dispatch({
+      type: 'ZERO',
     })
   }
 
   return (
     <div>
-      <button onClick={good}>good</button> 
-      <button>ok</button> 
-      <button>bad</button>
-      <button>reset stats</button>
-      <div>good {store.getState().good}</div>
-      <div>ok</div>
-      <div>bad</div>
+      <button onClick={good}>good</button>
+      <button onClick={ok}>ok</button>
+      <button onClick={bad}>bad</button>
+      <button onClick={resetStats}>reset stats</button>
+      {Object.keys(store.getState()).map(key => (
+        <div key={key}>
+          {key} {store.getState()[key]}
+        </div>
+      ))}
     </div>
   )
 }
