@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
+import BlogList from './components/BlogList'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storageService from './services/storage'
@@ -8,8 +9,10 @@ import LoginForm from './components/Login'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-import { useDispatch } from 'react-redux'
+
+import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs, createBlog } from './reducers/blogReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -25,8 +28,9 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+    // blogService.getAll().then((blogs) => setBlogs(blogs))
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   const notifyWith = (message, type) => {
     dispatch(setNotification({ message, type }, 3))
@@ -49,31 +53,6 @@ const App = () => {
     notifyWith('logged out')
   }
 
-  const createBlog = async (newBlog) => {
-    const createdBlog = await blogService.create(newBlog)
-    notifyWith(`A new blog '${newBlog.title}' by '${newBlog.author}' added`)
-    setBlogs(blogs.concat(createdBlog))
-    blogFormRef.current.toggleVisibility()
-  }
-
-  const like = async (blog) => {
-    const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id }
-    const updatedBlog = await blogService.update(blogToUpdate)
-    notifyWith(`A like for the blog '${blog.title}' by '${blog.author}'`)
-    setBlogs(blogs.map((b) => (b.id === blog.id ? updatedBlog : b)))
-  }
-
-  const remove = async (blog) => {
-    const ok = window.confirm(
-      `Sure you want to remove '${blog.title}' by ${blog.author}`
-    )
-    if (ok) {
-      await blogService.remove(blog.id)
-      notifyWith(`The blog' ${blog.title}' by '${blog.author} removed`)
-      setBlogs(blogs.filter((b) => b.id !== blog.id))
-    }
-  }
-
   if (!user) {
     return (
       <div>
@@ -84,8 +63,6 @@ const App = () => {
     )
   }
 
-  const byLikes = (b1, b2) => b2.likes - b1.likes
-
   return (
     <div>
       <h2>blogs</h2>
@@ -95,19 +72,9 @@ const App = () => {
         <button onClick={logout}>logout</button>
       </div>
       <Togglable buttonLabel='new note' ref={blogFormRef}>
-        <NewBlog createBlog={createBlog} />
+        <NewBlog blogFormRef={blogFormRef} />
       </Togglable>
-      <div>
-        {blogs.sort(byLikes).map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            like={() => like(blog)}
-            canRemove={user && blog.user.username === user.username}
-            remove={() => remove(blog)}
-          />
-        ))}
-      </div>
+      <BlogList />
     </div>
   )
 }

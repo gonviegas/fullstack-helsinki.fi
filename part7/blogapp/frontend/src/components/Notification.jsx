@@ -5,7 +5,6 @@ const Notification = () => {
     return state.notification
   })
 
-  console.log(notification)
   if (!notification.message) {
     return
   }
