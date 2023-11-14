@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
 import BlogList from './components/BlogList'
-import blogService from './services/blogs'
 import loginService from './services/login'
 import storageService from './services/storage'
 
@@ -28,7 +26,6 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    // blogService.getAll().then((blogs) => setBlogs(blogs))
     dispatch(initializeBlogs())
   }, [dispatch])
 
@@ -72,9 +69,9 @@ const App = () => {
         <button onClick={logout}>logout</button>
       </div>
       <Togglable buttonLabel='new note' ref={blogFormRef}>
-        <NewBlog blogFormRef={blogFormRef} />
+        <NewBlog />
       </Togglable>
-      <BlogList />
+      <BlogList user={user} />
     </div>
   )
 }

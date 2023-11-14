@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
-const BlogForm = ({ blogFormRef }) => {
+const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -13,17 +13,15 @@ const BlogForm = ({ blogFormRef }) => {
     dispatch(setNotification({ message, type }, 3))
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault()
-    const newBlog = await dispatch(createBlog({ title, author, url }))
-    notifyWith(`A new blog '${newBlog.title}' by '${newBlog.author}' added`)
-    blogFormRef.current.toggleVisibility()
+    dispatch(createBlog({ title, author, url }))
+    notifyWith(`A new blog '${title}' by '${author}' added`)
   }
 
   return (
     <div>
       <h4>Create a new blog</h4>
-
       <form onSubmit={handleSubmit}>
         <div>
           title
