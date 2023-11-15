@@ -3,20 +3,22 @@ import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
-const BlogForm = () => {
+const NewBlog = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const dispatch = useDispatch()
 
-  const notifyWith = (message, type) => {
-    dispatch(setNotification({ message, type }, 3))
-  }
-
   const handleSubmit = async event => {
     event.preventDefault()
-    dispatch(createBlog({ title, author, url }))
-    notifyWith(`A new blog '${title}' by '${author}' added`)
+    dispatch(createBlog({ title, author, url })).then(() => {
+      dispatch(
+        setNotification(
+          { msg: `A new blog '${title}' by '${author}' added` },
+          3
+        )
+      )
+    })
   }
 
   return (
@@ -56,4 +58,4 @@ const BlogForm = () => {
   )
 }
 
-export default BlogForm
+export default NewBlog

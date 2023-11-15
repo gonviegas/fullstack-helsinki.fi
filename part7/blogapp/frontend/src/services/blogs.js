@@ -17,7 +17,6 @@ const create = async (object) => {
 }
 
 const update = async (object) => {
-  console.log('headers: ', headers)
   const request = await axios.put(`${baseUrl}/${object.id}`, object, { headers })
   return request.data
 }

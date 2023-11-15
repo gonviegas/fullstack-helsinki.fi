@@ -1,25 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit'
+import storageService from '../services/storage'
+import loginService from '../services/login'
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: '',
+  initialState: storageService.loadUser(),
   reducers: {
     set(state, action) {
       return action.payload
     },
-    clear(state, action) {
-      const notification = { message: '', type: '' }
-      return notification
+    remove(state, action) {
+      return null
     }
   }
 })
 
-export const setUser = (notification, timeout) => {
-  return async (dispatch) => {
-    dispatch(set(notification))
-    setTimeout(() => dispatch(reset()), timeout * 1000)
+export const setUser = ({ username, password }) => {
+  return async dispatch => {
+    const user = await loginService.login({ username, password })
+    storageService.saveUser(user)
+    dispatch(set(user))
   }
 }
 
-export const { set, reset } = notificationSlice.actions
-export default notificationSlice.reducer
+export const removeUser = () => {
+  return async dispatch => {
+    storageService.removeUser()
+    dispatch(remove())
+  }
+}
+
+export const { set, remove } = userSlice.actions
+export default userSlice.reducer

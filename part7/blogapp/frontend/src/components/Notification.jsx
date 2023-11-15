@@ -5,7 +5,7 @@ const Notification = () => {
     return state.notification
   })
 
-  if (!notification.message) {
+  if (!notification.msg) {
     return
   }
 
@@ -21,7 +21,7 @@ const Notification = () => {
 
   return (
     <div style={style}>
-      {notification.message}
+      {notification.msg}
     </div>
   )
 }
