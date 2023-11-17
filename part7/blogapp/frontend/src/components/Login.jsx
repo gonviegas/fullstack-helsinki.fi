@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setUser } from '../reducers/userReducer'
+import { setLoggedUser } from '../reducers/loggedUserReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
 const Login = () => {
@@ -10,7 +10,7 @@ const Login = () => {
 
   const handleSubmit = async event => {
     event.preventDefault()
-    dispatch(setUser({ username, password }))
+    dispatch(setLoggedUser({ username, password }))
       .then(() => {
         dispatch(setNotification({ msg: 'welcome' }, 3))
       })

@@ -11,17 +11,21 @@ import UserBlogs from './components/UserBlogs.jsx'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const loggedUser = useSelector(state => state.loggedUser)
   const blogs = useSelector(state => state.blogs)
+  console.log(blogs)
+  const users = useSelector(state => state.users)
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
-  if (!user) {
+  if (!loggedUser) {
     return (
       <div>
         <h2>login</h2>
@@ -34,16 +38,16 @@ const App = () => {
   return (
     <div>
       <Router>
-        <NavMenu user={user} />
+        <NavMenu loggedUser={loggedUser} />
         <Notification />
         <Routes>
-          <Route path='/' element={<BlogsView user={user} blogs={blogs} />} />
-          <Route path='/users' element={<UsersView blogs={blogs} />} />
+          <Route path='/' element={<BlogsView blogs={blogs} />} />
           <Route
             path='/blogs/:id'
-            element={<Blog blogs={blogs} user={user} />}
+            element={<Blog blogs={blogs} loggedUser={loggedUser} />}
           />
-          <Route path='/users/:id' element={<UserBlogs blogs={blogs} />} />
+          <Route path='/users' element={<UsersView users={users} />} />
+          <Route path='/users/:id' element={<UserBlogs users={users} />} />
         </Routes>
       </Router>
     </div>

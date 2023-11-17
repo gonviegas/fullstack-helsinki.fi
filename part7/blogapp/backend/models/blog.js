@@ -1,16 +1,17 @@
 const mongoose = require('mongoose')
 
 const schema = mongoose.Schema({
-  title: { 
+  title: {
     type: String,
     required: true
   },
-  author: { 
+  author: {
     type: String,
     required: true
   },
   url: String,
   likes: Number,
+  comments: [],
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
