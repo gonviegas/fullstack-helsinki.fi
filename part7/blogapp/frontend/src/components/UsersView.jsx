@@ -4,7 +4,7 @@ const UsersView = ({ blogs }) => {
   const usersBlogs = () => {
     const users = []
     for (let i = 0; i < blogs.length; i++) {
-      const user = users.find(({ name }) => name === blogs[i].user.username)
+      const user = users.find(({ username }) => username === blogs[i].user.username)
       if (user) {
         user.numBlogs++
       } else {
