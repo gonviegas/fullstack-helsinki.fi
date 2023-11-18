@@ -32,10 +32,7 @@ const remove = async id => {
 const addComment = async object => {
   console.log(object)
 
-  const request = await axios.post(
-    `${baseUrl}/${object.id}/comments`,
-    object
-  )
+  const request = await axios.post(`${baseUrl}/${object.id}/comments`, object)
   return request.data
 }
 

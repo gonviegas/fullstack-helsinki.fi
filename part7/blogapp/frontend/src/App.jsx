@@ -17,7 +17,6 @@ const App = () => {
   const dispatch = useDispatch()
   const loggedUser = useSelector(state => state.loggedUser)
   const blogs = useSelector(state => state.blogs)
-  console.log(blogs)
   const users = useSelector(state => state.users)
 
   useEffect(() => {
