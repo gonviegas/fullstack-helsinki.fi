@@ -3,13 +3,13 @@ import { createComment } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 
-const NewComment = ({ id, blog }) => {
+const NewComment = ({ blog }) => {
   const [comment, setComment] = useState('')
   const dispatch = useDispatch()
 
   const handleSubmit = async event => {
     event.preventDefault()
-    dispatch(createComment({ id: id, comment: comment })).then(() => {
+    dispatch(createComment({ id: blog.id, comment: comment })).then(() => {
       dispatch(setNotification({ msg: `A new comment '${comment}' added` }, 3))
       setComment('')
     })

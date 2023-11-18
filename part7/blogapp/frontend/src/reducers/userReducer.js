@@ -8,7 +8,6 @@ const userSlice = createSlice({
     set(state, action) {
       return action.payload
     },
-    
   }
 })
 

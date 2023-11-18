@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Routes, Route, useMatch, Navigate } from 'react-router-dom'
 
 import Notification from './components/Notification'
 import Login from './components/Login'
@@ -18,6 +18,14 @@ const App = () => {
   const loggedUser = useSelector(state => state.loggedUser)
   const blogs = useSelector(state => state.blogs)
   const users = useSelector(state => state.users)
+  const matchedBlog = useMatch('/blogs/:id')
+  const matchedUser = useMatch('/users/:id')
+  const blog = matchedBlog
+    ? blogs.find(b => b.id === matchedBlog.params.id)
+    : null
+  const user = matchedUser
+    ? users.find(u => u.id === matchedUser.params.id)
+    : null
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -27,8 +35,8 @@ const App = () => {
   if (!loggedUser) {
     return (
       <div>
-        <h2>login</h2>
         <Notification />
+        <Navigate replace to='/login' />
         <Login />
       </div>
     )
@@ -36,19 +44,18 @@ const App = () => {
 
   return (
     <div>
-      <Router>
-        <NavMenu loggedUser={loggedUser} />
-        <Notification />
-        <Routes>
-          <Route path='/' element={<BlogsView blogs={blogs} />} />
-          <Route
-            path='/blogs/:id'
-            element={<Blog blogs={blogs} loggedUser={loggedUser} />}
-          />
-          <Route path='/users' element={<UsersView users={users} />} />
-          <Route path='/users/:id' element={<UserBlogs users={users} />} />
-        </Routes>
-      </Router>
+      <NavMenu loggedUser={loggedUser} />
+      <Notification />
+      <Routes>
+        <Route path='*' element={<Navigate replace to='/' />} />
+        <Route path='/' element={<BlogsView blogs={blogs} />} />
+        <Route
+          path='/blogs/:id'
+          element={<Blog blog={blog} loggedUser={loggedUser} />}
+        />
+        <Route path='/users' element={<UsersView users={users} />} />
+        <Route path='/users/:id' element={<UserBlogs user={user} />} />
+      </Routes>
     </div>
   )
 }

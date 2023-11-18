@@ -4,9 +4,7 @@ import { setNotification } from '../reducers/notificationReducer'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import NewComment from './NewComment'
 
-const Blog = ({ blogs, loggedUser }) => {
-  const id = useParams().id
-  const blog = blogs.find(b => b.id === id)
+const Blog = ({ blog, loggedUser }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -56,7 +54,7 @@ const Blog = ({ blogs, loggedUser }) => {
           {loggedUser && blog.user.username === loggedUser.username && (
             <button onClick={() => remove(blog)}>delete</button>
           )}
-          <NewComment id={id} blog={blog} />
+          <NewComment blog={blog} />
         </div>
       </div>
     )
