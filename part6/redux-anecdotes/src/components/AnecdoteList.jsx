@@ -16,22 +16,22 @@ const Anecdote = ({ anecdote, handleClick }) => {
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => {
-    return state.anecdotes.filter(anecdote =>
+  const anecdotes = useSelector((state) => {
+    return state.anecdotes.filter((anecdote) =>
       anecdote.content.includes(state.filter)
     )
   })
 
   const anecdotesVotesDescending = anecdotes.sort((a, b) => b.votes - a.votes)
 
-  const handleClick = anecdote => {
+  const handleClick = (anecdote) => {
     dispatch(updateVotes(anecdote))
     dispatch(setNotification(`Vote added: ${anecdote.content}`, 10))
   }
 
   return (
     <div>
-      {anecdotesVotesDescending.map(anecdote => (
+      {anecdotesVotesDescending.map((anecdote) => (
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
