@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { removeLoggedUser } from '../reducers/loggedUserReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Navigation, Button } from '../styles.js'
 
 const NavMenu = ({ loggedUser }) => {
   const dispatch = useDispatch()
@@ -16,7 +17,7 @@ const NavMenu = ({ loggedUser }) => {
   }
 
   return (
-    <div>
+    <Navigation>
       <Link style={padding} to='/'>
         blogs
       </Link>
@@ -24,8 +25,8 @@ const NavMenu = ({ loggedUser }) => {
         users
       </Link>
       {loggedUser.name} logged in
-      <button onClick={logout}>logout</button>
-    </div>
+      <Button onClick={logout}>logout</Button>
+    </Navigation>
   )
 }
 

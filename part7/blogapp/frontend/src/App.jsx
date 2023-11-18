@@ -12,6 +12,7 @@ import UserBlogs from './components/UserBlogs.jsx'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
+import styled from 'styled-components'
 
 const App = () => {
   const dispatch = useDispatch()

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Button, Input } from '../styles'
 
 const NewBlog = () => {
   const [title, setTitle] = useState('')
@@ -27,7 +28,7 @@ const NewBlog = () => {
       <form onSubmit={handleSubmit}>
         <div>
           title
-          <input
+          <Input
             id='title'
             placeholder='title'
             value={title}
@@ -36,7 +37,7 @@ const NewBlog = () => {
         </div>
         <div>
           author
-          <input
+          <Input
             id='author'
             placeholder='author'
             value={author}
@@ -45,14 +46,14 @@ const NewBlog = () => {
         </div>
         <div>
           url
-          <input
+          <Input
             id='url'
             placeholder='url'
             value={url}
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type='submit'>create</button>
+        <Button type='submit'>create</Button>
       </form>
     </div>
   )

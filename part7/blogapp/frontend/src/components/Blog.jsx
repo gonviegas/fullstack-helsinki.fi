@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import NewComment from './NewComment'
+import { Button } from '../styles'
 
 const Blog = ({ blog, loggedUser }) => {
   const dispatch = useDispatch()
@@ -48,11 +49,11 @@ const Blog = ({ blog, loggedUser }) => {
             <a href={blog.url}> {blog.url}</a>{' '}
           </div>
           <div>
-            {blog.likes} likes <button onClick={() => like(blog)}>like</button>
+            {blog.likes} likes <Button onClick={() => like(blog)}>like</Button>
           </div>
           <div>added by {blog.user && blog.user.name}</div>
           {loggedUser && blog.user.username === loggedUser.username && (
-            <button onClick={() => remove(blog)}>delete</button>
+            <Button onClick={() => remove(blog)}>delete</Button>
           )}
           <NewComment blog={blog} />
         </div>

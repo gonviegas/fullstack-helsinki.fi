@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setLoggedUser } from '../reducers/loggedUserReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Button, Input } from '../styles'
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -29,7 +30,7 @@ const Login = () => {
       <h2>login</h2>
       <div>
         username
-        <input
+        <Input
           id='username'
           value={username}
           onChange={({ target }) => setUsername(target.value)}
@@ -37,16 +38,16 @@ const Login = () => {
       </div>
       <div>
         password
-        <input
+        <Input
           id='password'
           type='password'
           value={password}
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button id='login-button' type='submit'>
+      <Button id='login-button' type='submit'>
         login
-      </button>
+      </Button>
     </form>
   )
 }

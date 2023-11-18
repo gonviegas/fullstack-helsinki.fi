@@ -16,7 +16,7 @@ const BlogsView = ({ blogs }) => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>Blogs</h2>
       <Togglable buttonLabel='create new' ref={blogFormRef}>
         <NewBlog />
       </Togglable>
