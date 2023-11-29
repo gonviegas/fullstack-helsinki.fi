@@ -14,6 +14,8 @@ function App() {
     return <div>loading...</div>
   }
 
+  console.log('allAuthors', allAuthors)
+  console.log('allBooks', allBooks)
   return (
     <div>
       <div>
