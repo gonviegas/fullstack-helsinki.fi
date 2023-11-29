@@ -1,6 +1,6 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
-const { v1: uuid } = require('uuid')
+const { GraphQLError } = require('graphql')
 
 const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
@@ -164,14 +164,24 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
+      if (args.title.length < 5) {
+        throw new GraphQLError('Title needs to have 5 or more characters', {
+          extensions: { code: 'BAD_USER_INPUT', argumentName: args.title }
+        })
+      }
+
+      if (!args.genres.length > 0) {
+        throw new GraphQLError('Need to provide at least one genre', {
+          extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.genres }
+        })
+      }
+
       const author = await Author.findOne({ name: args.author })
-      // if (!author) {
-      //   author = new Author({
-      //     name: args.author,
-      //     born: 2
-      //   })
-      //   await author.save()
-      // }
+      if (!author) {
+        throw new GraphQLError('Author not found', {
+          extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.author }
+        })
+      }
 
       const book = new Book({
         title: args.title,
@@ -180,14 +190,33 @@ const resolvers = {
         author: author
       })
 
-      await book.save()
+      try {
+        await book.save()
+      } catch (error) {
+        throw new GraphQLError('Saving book failed', {
+          extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.name, error }
+        })
+      }
 
       return book
     },
     editAuthor: async (root, args) => {
       const author = await Author.findOne({ name: args.name })
+
+      if (!author) {
+        throw new GraphQLError('Author not found', {
+          extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.author }
+        })
+      }
+
       author.born = args.born
-      await author.save()
+      try {
+        await author.save()
+      } catch (error) {
+        throw new GraphQLError('Saving author failed', {
+          extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.name, error }
+        })
+      }
       return author
     }
   }
