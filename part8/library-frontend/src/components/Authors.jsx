@@ -5,7 +5,7 @@ import Select from 'react-select'
 
 const Authors = props => {
   const [name, setName] = useState(null)
-  const [born, setBorn] = useState(0)
+  const [born, setBorn] = useState('')
 
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }]
