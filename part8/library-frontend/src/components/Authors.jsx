@@ -30,8 +30,8 @@ const Authors = props => {
         <tbody>
           <tr>
             <th></th>
-            <th>born</th>
-            <th>books</th>
+            <th style={{ textAlign: 'left' }}>born</th>
+            <th style={{ textAlign: 'left' }}>books</th>
           </tr>
           {props.authors.map(a => (
             <tr key={a.name}>

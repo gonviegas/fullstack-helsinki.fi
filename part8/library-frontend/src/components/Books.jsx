@@ -31,8 +31,8 @@ const Books = props => {
         <tbody>
           <tr>
             <th></th>
-            <th>author</th>
-            <th>published</th>
+            <th style={{ textAlign: 'left' }}>author</th>
+            <th style={{ textAlign: 'left' }}>published</th>
           </tr>
           {genreSelected ? (
             <BooksByGenre genre={genreSelected} />

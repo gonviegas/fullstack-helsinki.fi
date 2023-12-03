@@ -15,7 +15,6 @@ const RecommendedBooks = props => {
     return null
   }
 
-  console.log(books)
   return (
     <div>
       <h2>recommendations</h2>
