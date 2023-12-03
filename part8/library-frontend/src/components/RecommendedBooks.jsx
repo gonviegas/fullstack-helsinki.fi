@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react'
+import { GetBooksByGenre } from '../hooks'
 
 const RecommendedBooks = props => {
-  const [books, setBooks] = useState()
+  const [genre, setGenre] = useState(null)
+  const books = GetBooksByGenre(genre)
 
   useEffect(() => {
-    if (props.user)
-      setBooks(
-        props.books.filter(book =>
-          book.genres.includes(props.user.favoriteGenre)
-        )
-      )
+    if (props.user) {
+      setGenre(props.user.favoriteGenre)
+    }
   }, [props.user])
 
   if (!props.show) {
     return null
   }
 
+  console.log(books)
   return (
     <div>
       <h2>recommendations</h2>
@@ -27,13 +27,14 @@ const RecommendedBooks = props => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map(a => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
+          {books.data &&
+            books.data.allBooks.map(a => (
+              <tr key={a.title}>
+                <td>{a.title}</td>
+                <td>{a.author.name}</td>
+                <td>{a.published}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

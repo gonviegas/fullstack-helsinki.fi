@@ -1,34 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import BooksByGenre from './BooksByGenre'
 
 const Books = props => {
-  const [genre, setGenre] = useState()
+  const [genreSelected, setGenreSelected] = useState()
+  const [genres, setGenres] = useState()
   const [books, setBooks] = useState(props.books)
+
+  useEffect(() => {
+    if (props.books) {
+      const newGenres = []
+      for (let book of props.books) {
+        for (let genre of book.genres) {
+          if (!newGenres.includes(genre)) newGenres.push(genre)
+        }
+      }
+      setGenres(newGenres)
+      setBooks(props.books)
+    }
+  }, [props.books])
 
   if (!props.show) {
     return null
   }
 
-  const genres = []
-  for (let book of props.books) {
-    for (let genre of book.genres) {
-      if (!genres.includes(genre)) genres.push(genre)
-    }
-  }
-
-  const filterBooks = genre => {
-    if (!genre) {
-      setGenre()
-      setBooks(props.books)
-    } else {
-      setGenre(genre)
-      setBooks(props.books.filter(book => book.genres.includes(genre)))
-    }
-  }
-
   return (
     <div>
       <h2>books</h2>
-      {genre && <h3>{genre}</h3>}
+      {genreSelected && <h3>{genreSelected}</h3>}
       <table>
         <tbody>
           <tr>
@@ -36,31 +34,35 @@ const Books = props => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map(a => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
+          {genreSelected ? (
+            <BooksByGenre genre={genreSelected} />
+          ) : (
+            books.map(a => (
+              <tr key={a.title}>
+                <td>{a.title}</td>
+                <td>{a.author.name}</td>
+                <td>{a.published}</td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
       <div>
-        {genres.map(g => (
+        {genres.map(genre => (
           <button
-            onClick={() => filterBooks(g)}
-            key={g}
+            onClick={() => setGenreSelected(genre)}
+            key={genre}
             style={{
               marginRight: '5px',
-              border: genre === g ? '2px solid #04AA6D' : ''
+              border: genreSelected === genre ? '2px solid #04AA6D' : ''
             }}
           >
-            {g}
+            {genre}
           </button>
         ))}
         <button
-          onClick={() => filterBooks()}
-          style={{ border: !genre ? '2px solid #04AA6D' : '' }}
+          onClick={() => setGenreSelected()}
+          style={{ border: !genreSelected ? '2px solid #04AA6D' : '' }}
         >
           all genres
         </button>
