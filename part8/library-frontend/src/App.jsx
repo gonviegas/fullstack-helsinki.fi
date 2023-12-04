@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useQuery, useApolloClient } from '@apollo/client'
+import { useApolloClient, useQuery, useSubscription } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
 import RecommendedBooks from './components/RecommendedBooks'
-import { ALL_AUTHORS, ALL_BOOKS, ME } from './queries'
+import { ALL_AUTHORS, ALL_BOOKS, ME, BOOK_ADDED } from './queries'
 
 function App() {
   const [page, setPage] = useState('authors')
@@ -14,6 +14,12 @@ function App() {
   const allAuthors = useQuery(ALL_AUTHORS)
   const allBooks = useQuery(ALL_BOOKS)
   const user = useQuery(ME)
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const bookAdded = data.data.bookAdded
+      window.alert(`Book '${bookAdded.title}' added`)
+    },
+  })
 
   useEffect(() => {
     if (localStorage.getItem('user-token')) {
@@ -24,6 +30,7 @@ function App() {
   if (allAuthors.loading || allBooks.loading || user.loading) {
     return <div>loading...</div>
   }
+
 
   const logout = () => {
     setToken(null)
