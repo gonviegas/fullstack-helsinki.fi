@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { ALL_BOOKS, ALL_AUTHORS, ADD_BOOK } from '../queries'
+import { updateCache } from '../App'
 
 const NewBook = props => {
   const [title, setTitle] = useState('')
@@ -10,23 +11,24 @@ const NewBook = props => {
   const [genres, setGenres] = useState([])
 
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_AUTHORS }],
+    // refetchQueries: [{ query: ALL_AUTHORS }],
     onError: error => {
       const messages = error.graphQLErrors.map(e => e.message).join('\n')
       if (messages) console.log(messages)
     },
     update: (cache, response) => {
-      cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
-        return { allBooks: allBooks.concat(response.data.addBook) }
-      })
-      for (let genre of response.data.addBook.genres) {
-        cache.updateQuery(
-          { query: ALL_BOOKS, variables: { genre: genre } },
-          ({ allBooks }) => {
-            return { allBooks: allBooks.concat(response.data.addBook) }
-          }
-        )
-      }
+      updateCache(cache, { query: ALL_BOOKS }, response.data.addBook)
+      // cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+      //   return { allBooks: allBooks.concat(response.data.addBook) }
+      // })
+      // for (let genre of response.data.addBook.genres) {
+      //   cache.updateQuery(
+      //     { query: ALL_BOOKS, variables: { genre: genre } },
+      //     ({ allBooks }) => {
+      //       return { allBooks: allBooks.concat(response.data.addBook) }
+      //     }
+      //   )
+      // }
     }
   })
 
