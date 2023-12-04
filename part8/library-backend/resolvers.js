@@ -22,15 +22,19 @@ const resolvers = {
 
       return await Book.find({})
     },
-    allAuthors: async () => await Author.find({}),
+    allAuthors: async () => {
+      const authors = await Author.find({})
+      for (const author of authors) {
+        author.bookCount = await Book.find({
+          author: { $in: author._id }
+        }).countDocuments()
+      }
+      return authors
+    },
     me: (root, args, context) => context.currentUser
   },
-  Author: {
-    bookCount: async root =>
-      await Book.find({ author: root._id }).countDocuments()
-  },
   Book: {
-    author: async root => await Author.findOne({ _id: root.author })
+    author: async root => await Author.findOne({ _id: { $in: root.author } })
   },
   Mutation: {
     addBook: async (root, args, context) => {
