@@ -1,4 +1,4 @@
-interface InputValues {
+export interface InputValues {
   target: number;
   dailyExerciseHours: number[];
 }
@@ -13,7 +13,7 @@ interface Result {
   average: number;
 }
 
-const calculateExercises = (
+export const calculateExercises = (
   target: number,
   dailyExerciseHours: number[]
 ): Result => {
