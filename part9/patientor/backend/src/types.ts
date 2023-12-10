@@ -22,5 +22,5 @@ export interface Patient {
   entries: never[];
 }
 
-export type NonSensitivePatientEntry = Omit<Patient, 'ssn' | 'entries'>;
-export type NewPatientEntry = Omit<Patient, 'id'>;
+export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
+export type NewPatient = Omit<Patient, 'id'>;
