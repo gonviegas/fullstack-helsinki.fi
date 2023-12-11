@@ -1,9 +1,10 @@
-import { Patient, Diagnosis } from '../types.ts';
+import { Patient, Diagnosis } from '../../types.ts';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import patientService from '../services/patients';
+import patientService from '../../services/patients';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
+import EntryDetails from './EntryDetails';
 
 interface Props {
   diagnoses: Diagnosis[];
@@ -32,23 +33,7 @@ const PatientDetailsPage = ({ diagnoses }: Props) => {
       <div>date of birth: {patient?.dateOfBirth}</div>
       <h3>entries</h3>
       {patient?.entries.map(entry => (
-        <div key={entry.id}>
-          {entry.date} {entry.description}
-          {entry.diagnosisCodes && (
-            <ul>
-              {entry.diagnosisCodes.map(entryCode => (
-                <li key={entryCode}>
-                  {entryCode}
-                  {' '}
-                  {
-                    diagnoses.find(diagnosis => diagnosis.code === entryCode)
-                      ?.name
-                  }
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <EntryDetails key={entry.id} entry={entry} diagnoses={diagnoses} />
       ))}
     </>
   );
