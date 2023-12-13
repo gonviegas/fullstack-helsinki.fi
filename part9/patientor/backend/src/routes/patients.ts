@@ -1,6 +1,12 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import toNewPatient from '../utils';
+import {
+  toNewPatient,
+  toNewHealthCheckEntry,
+  toNewOccupationalHealthcareEntry,
+  toNewHospitalEntry
+} from '../utils';
+import { NewEntry } from '../types';
 
 const router = express.Router();
 
@@ -23,6 +29,34 @@ router.post('/', (req, res) => {
     const newPatient = toNewPatient(req.body);
     const addedPatient = patientService.addPatient(newPatient);
     res.json(addedPatient);
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong.';
+    if (error instanceof Error) {
+      errorMessage += ' Error: ' + error.message;
+    }
+    res.status(400).send(errorMessage);
+  }
+});
+
+router.post('/:id/entries', (req, res) => {
+  try {
+    let newEntry;
+    if (req.body.type === 'HealthCheck') {
+      newEntry = toNewHealthCheckEntry(req.body);
+    } else if (req.body.type === 'OccupationalHealthcare') {
+      newEntry = toNewOccupationalHealthcareEntry(req.body);
+    } else if (req.body.type === 'Hospital') {
+      newEntry = toNewHospitalEntry(req.body);
+    } else {
+      throw new Error('Invalid entry type');
+    }
+
+    const addedEntry = patientService.addEntry(
+      req.params.id,
+      newEntry as NewEntry
+    );
+
+    addedEntry ? res.json(addedEntry) : res.sendStatus(404);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong.';
     if (error instanceof Error) {
