@@ -113,9 +113,7 @@ const parseSickLeave = (
 
   if (
     !sickLeave ||
-    typeof sickLeave !== 'object' ||
-    !('startDate' in object) ||
-    !('endDate' in object)
+    typeof sickLeave !== 'object'
   ) {
     throw new Error('Incorrect sick leave: ' + sickLeave);
   }

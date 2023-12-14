@@ -7,12 +7,6 @@ export interface Diagnosis {
   name: string;
   latin?: string;
 }
-export enum EntryType {
-  HealthCheck = 'HealthCheck',
-  OccupationalHealthcare = 'OccupationalHealthcare',
-  Hospital = 'Hospital'
-}
-
 export enum Gender {
   Male = 'male',
   Female = 'female',

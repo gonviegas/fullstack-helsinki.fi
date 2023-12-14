@@ -30,9 +30,9 @@ const HealthCheck = ({ style, entry, diagnoses }: Props) => {
         {entry.date} <MedicalServicesIcon />
       </div>
       <div>{entry.description}</div>
-      {entry.diagnosisCodes && (
+      {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 && (
         <ul style={{ listStyle: 'none', padding: 0 }}>
-          <div>diagnosis:</div>
+          <div>Diagnosis</div>
           {entry.diagnosisCodes.map(entryCode => (
             <li key={entryCode}>
               {entryCode}{' '}
@@ -42,6 +42,7 @@ const HealthCheck = ({ style, entry, diagnoses }: Props) => {
         </ul>
       )}
       <div>{healthCheckRating()}</div>
+      <br />
       <div>diagnose by {entry.specialist}</div>
     </div>
   );

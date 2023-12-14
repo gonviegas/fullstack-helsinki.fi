@@ -14,9 +14,9 @@ const OccupationalHealthcare = ({ style, entry, diagnoses }: Props) => {
         {entry.date} {<WorkIcon />} {entry.employerName}
       </div>
       <div>{entry.description}</div>
-      {entry.diagnosisCodes && (
+      {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 && (
         <ul style={{ listStyle: 'none', padding: 0 }}>
-          <div>diagnosis:</div>
+          <div>Diagnosis</div>
           {entry.diagnosisCodes.map(entryCode => (
             <li key={entryCode}>
               {entryCode}{' '}
@@ -25,9 +25,12 @@ const OccupationalHealthcare = ({ style, entry, diagnoses }: Props) => {
           ))}
         </ul>
       )}
-      {entry.sickLeave && (
+      {entry.sickLeave?.startDate && entry.sickLeave?.endDate && (
         <div>
-          sick leave: {entry.sickLeave.startDate} / {entry.sickLeave.endDate}
+          <div>Sick Leave </div>
+          <div>start: {entry.sickLeave.startDate}</div>
+          <div>end: {entry.sickLeave.endDate}</div>
+          <br />
         </div>
       )}
       <div>diagnose by {entry.specialist}</div>
