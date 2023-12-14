@@ -14,7 +14,7 @@ const Hospital = ({ style, entry, diagnoses }: Props) => {
         {entry.date} <LocalHospitalIcon />
       </div>
       <div>{entry.description}</div>
-      {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 && (
+      {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 ? (
         <ul style={{ listStyle: 'none', padding: 0 }}>
           <div>Diagnosis</div>
           {entry.diagnosisCodes.map(entryCode => (
@@ -24,6 +24,8 @@ const Hospital = ({ style, entry, diagnoses }: Props) => {
             </li>
           ))}
         </ul>
+      ): (
+        <br />
       )}
       <div>Discharge </div>
       <div>date: {entry.discharge.date} </div>
